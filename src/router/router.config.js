@@ -1,6 +1,9 @@
-import App from '../components/WelcomeItem.vue';
 
 export const defaltMap = [
-  { path: '/wel', component: App },
+  { 
+    path: "/login", 
+    name: "Login",
+    component: ()=>import("../views/Login.vue")
+  },
 ];
 export default {};
