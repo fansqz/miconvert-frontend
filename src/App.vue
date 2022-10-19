@@ -1,6 +1,5 @@
 <template>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-    <el-button>按钮</el-button>
+    <router-view></router-view>
 </template>
 
 <style scoped>
