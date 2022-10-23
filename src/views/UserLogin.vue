@@ -5,7 +5,6 @@
     :rules="rules"
     label-width="120px"
     class="demo-ruleForm"
-    :size="formSize"
     status-icon
   >
     <el-form-item label="用户名" prop="username">
@@ -26,7 +25,6 @@
 // 基本  内容多属性
 import { ref, reactive } from 'vue';
 // 单向数据输出，如果要双向数据绑定，还需要api方法调用
-const formsize = ref('default');
 const ruleForm = reactive({
   username: 'hello',
   password: '123456',
@@ -51,7 +49,7 @@ const doSubmit = function () {
     } else {
       console.log('error submit', fields);
     }
-  }),
+  });
 };
 
 </script>
