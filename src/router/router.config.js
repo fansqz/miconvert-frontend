@@ -1,8 +1,8 @@
 export const defaltMap = [
   {
     path: '/login',
-    name: 'Login',
-    component: () => import('../views/UserLogin.vue'),
+    name: 'login',
+    component: () => import('../views/userLogin.vue'),
   },
 ];
 
