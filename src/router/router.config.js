@@ -5,4 +5,5 @@ export const defaltMap = [
     component: () => import('../views/UserLogin.vue'),
   },
 ];
+
 export default {};

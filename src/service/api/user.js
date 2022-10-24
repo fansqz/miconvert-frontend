@@ -7,7 +7,7 @@ const user = {
   },
   // 登录
   login(data) {
-    return request.post('/user/login', data);
+    return request.postByFrom('/user/login', data);
   },
   changePassword(data) {
     return request.post('/user/changePassword', data);

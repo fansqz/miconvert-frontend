@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import axios from 'axios';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 console.log(process.env.NODE_ENV);
 
@@ -9,17 +10,17 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 // 创建一个新的axios实例
 const instance = axios.create({
   baseURL: 'http://localhost:8080',
-  timeout: 5000,
+//  timeout: 50000000,
 });
 
 // 设置状态码回调提示
 const errorHandle = (code, msg) => {
   switch (code) {
-    case 4000:
-      console.log(msg);
+    case 1:
+      ElMessage.error(msg);
       break;
-    case 5000 || 5001:
-      console.log(msg);
+    case 2:
+      ElMessageBox.error(msg);
       break;
     case 5002:
       console.log(msg);
@@ -49,8 +50,9 @@ instance.interceptors.request.use((config) => {
 instance.interceptors.response.use((response) => {
   const { data } = response;
   const { code } = data;
-  const { msg } = data;
-  errorHandle(code, msg);
+  const { message } = data;
+  // 处理异常
+  errorHandle(code, message);
   return data;
 }, (error) => {
   const { response } = error;

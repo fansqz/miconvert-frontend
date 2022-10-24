@@ -2,11 +2,12 @@
 // 一如定义store的函数
 import { defineStore } from 'pinia';
 // 按约定成 返回usexxx
-export const useUser = defineStore({
+const useUser = defineStore({
   id: 'user',
   state() {
     return {
       userInfo: {},
+      // 路由菜单，todo:暂时没有用上
       userMenu: [],
     };
   },
@@ -22,4 +23,4 @@ export const useUser = defineStore({
   },
 });
 
-export default {};
+export default useUser;

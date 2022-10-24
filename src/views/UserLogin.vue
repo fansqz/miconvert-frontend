@@ -24,10 +24,13 @@
 <script setup>
 // 基本  内容多属性
 import { ref, reactive } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import userApi from '../service/api/user';
-import { useUser } from '../store/user';
+import useUser from '../store/user';
 // 一定要在方法内使用userUser
-const user = useUser;
+const user = useUser();
+const route = useRoute();
+const router = useRouter();
 // 单向数据输出，如果要双向数据绑定，还需要api方法调用
 const ruleForm = reactive({
   username: 'hello',
@@ -47,10 +50,15 @@ const rules = {
 // 获取页面引用对象
 const ruleFormRef = ref();
 const doSubmit = () => {
-  ruleFormRef.value.validate((valid, fields) => {
+  ruleFormRef.value.validate(async (valid, fields) => {
     if (valid) {
-      const res = userApi.login(ruleForm);
-      console.log(res, '测试数据');
+      const res = await userApi.login(ruleForm);
+      // 登录成功,设置状态
+      user.setUserInfo(ruleForm.username);
+      // 添加token
+      window.localStorage.setItem('token', res.data);
+      // 跳转到首页
+      router.push(route.query.redirec || '/');
     } else {
       console.log('error submit', fields);
     }
