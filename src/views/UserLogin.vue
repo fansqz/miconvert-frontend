@@ -24,6 +24,10 @@
 <script setup>
 // 基本  内容多属性
 import { ref, reactive } from 'vue';
+import userApi from '../service/api/user';
+import { useUser } from '../store/user';
+// 一定要在方法内使用userUser
+const user = useUser;
 // 单向数据输出，如果要双向数据绑定，还需要api方法调用
 const ruleForm = reactive({
   username: 'hello',
@@ -33,19 +37,20 @@ const ruleForm = reactive({
 // 设置表单输入时的校验
 const rules = {
   username: [
-    { required: true, mesagee: '必须输入用户名' },
+    { required: true, message: '请输入用户名' },
   ],
   password: [
-    { required: true, message: '必须输入密码' },
+    { required: true, message: '请输入密码' },
   ],
 };
 
 // 获取页面引用对象
 const ruleFormRef = ref();
-const doSubmit = function () {
+const doSubmit = () => {
   ruleFormRef.value.validate((valid, fields) => {
     if (valid) {
-      console.log('submit!');
+      const res = userApi.login(ruleForm);
+      console.log(res, '测试数据');
     } else {
       console.log('error submit', fields);
     }

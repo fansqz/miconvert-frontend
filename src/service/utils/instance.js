@@ -3,20 +3,12 @@ import axios from 'axios';
 
 console.log(process.env.NODE_ENV);
 
-const baseUrl = () => {
-  let url;
-  if (process.env.NODE_ENV === 'dev') {
-    url = 'http://localhost:8080';
-  }
-  return url;
-};
-
 // 设置post方法的请求头
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 
 // 创建一个新的axios实例
 const instance = axios.create({
-  baseURL: baseUrl,
+  baseURL: 'http://localhost:8080',
   timeout: 5000,
 });
 
