@@ -1,15 +1,15 @@
 /* eslint-disable no-console */
 import axios from 'axios';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import baseUrl from './baseUrl';
 
 console.log(process.env.NODE_ENV);
 
 // 设置post方法的请求头
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-
 // 创建一个新的axios实例
 const instance = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: baseUrl,
 //  timeout: 50000000,
 });
 

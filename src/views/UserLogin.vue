@@ -60,6 +60,7 @@ const doSubmit = () => {
       // 跳转到首页
       router.push(route.query.redirec || '/');
     } else {
+      // eslint-disable-next-line no-console
       console.log('error submit', fields);
     }
   });

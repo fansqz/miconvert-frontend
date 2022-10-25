@@ -1,4 +1,5 @@
 import request from '../utils';
+import baseUrl from '../utils/baseUrl';
 
 const convert = {
   // 同步转换文件
@@ -20,6 +21,9 @@ const convert = {
   // 根据输出格式获取支持的输入格式
   listAllInFormatByOutFormat(data) {
     return request.get('/convert/listInFormatByOutFormat', data);
+  },
+  getDowloadBeginUrl() {
+    return `${baseUrl}/convert/downloadFile`;
   },
 };
 
