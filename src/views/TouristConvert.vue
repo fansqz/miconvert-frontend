@@ -1,39 +1,46 @@
 <template>
+  <!--上传列表-->
   <el-upload
-            class="upload-demo"
-            drag
-            accept=".pdf,.doc,.docx,.png,.jpg"
-            :before-upload="beforeUpload"
-            :http-request="convertFile"
-            :on-remove="handleRemove"
-            :show-file-list="false"
-          >
-            <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-            <div class="el-upload__text">
-                将文件拖到此处，<em>或点击上传</em>
-            </div>
-            <template #tip>
-                <div class="el-upload__tip">
-                    只支持pdf、doc、docx、png、jpg
-                </div>
-            </template>
-  </el-upload>
-  <el-table :data="fileList" border stripe style="width: 100%">
-          <el-table-column prop="name" label="文件名称"></el-table-column>
-          <el-table-column width="80px">
-              <template v-slot="{row}">
-                  <el-button size="small" type="text">
-                      <a :href="row.url">下载</a>
-                  </el-button>
-              </template>
-          </el-table-column>
-          <el-table-column width="80px" v-if="isShowDel">
-              <template v-slot="scope">
-                  <el-button size="small" type="text" @click="deleteButton(scope.$index)">删除
-                  </el-button>
-              </template>
-          </el-table-column>
-      </el-table>
+    class="upload-demo"
+    drag
+    accept=".pdf,.doc,.docx,.png,.jpg"
+    :before-upload="beforeUpload"
+    :http-request="convertFile"
+    :on-remove="handleRemove"
+    :show-file-list="false"
+  >
+    <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+    <div class="el-upload__text">
+        将文件拖到此处，<em>或点击上传</em>
+    </div>
+    <!--下拉框-->
+    <template #tip>
+      <el-form-item label="目标类型：">
+              <el-select v-model="outFormat" @click="getOutFormats">
+                <el-option v-for="(item,index) in outFormats"
+                :key="index" :label="item" :value="item">
+                </el-option>
+              </el-select>
+    </el-form-item>
+    </template>
+  </el-upload><br/>
+  <!--文件列表-->
+  <el-table :data="fileList"  stripe style="width: 100%">
+    <el-table-column prop="name"></el-table-column>
+    <el-table-column width="80px">
+        <template v-slot="{row}">
+            <el-button size="small" type="text">
+                <a :href="row.url">下载</a>
+            </el-button>
+        </template>
+    </el-table-column>
+    <el-table-column width="80px" v-if="isShowDel">
+        <template v-slot="scope">
+            <el-button size="small" type="text" @click="deleteButton(scope.$index)">删除
+            </el-button>
+        </template>
+    </el-table-column>
+  </el-table>
 </template>
 
 <script setup>
@@ -41,7 +48,12 @@ import { ElMessage } from 'element-plus';
 import { ref, nextTick } from 'vue';
 import convert from '../service/api/convert';
 
+// 文件列表
 const fileList = ref([]);
+// 选择的格式
+const outFormat = ref();
+// 可选的格式
+const outFormats = ref([]);
 
 // 添加文件并校验
 const beforeUpload = (file) => {
@@ -75,9 +87,15 @@ const convertFile = async (params) => {
   await nextTick();
 };
 
+// 获取输出格式
+const getOutFormats = async () => {
+  const res = await convert.listAllOutFormat();
+  outFormats.value = res.data;
+};
+
 </script>
 
-<style scoped>
+<style>
 .example-showcase .el-dropdown-link {
   cursor: pointer;
   color: var(--el-color-primary);
