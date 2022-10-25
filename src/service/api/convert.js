@@ -13,6 +13,14 @@ const convert = {
   downloadFile(data) {
     return request.download(`/convert/downloadFile/${data}`, {}, 'get');
   },
+  // 获取输出各格式列表
+  listAllOutFormat() {
+    return request.get('/convert/listAllOutFormat', {});
+  },
+  // 根据输出格式获取支持的输入格式
+  listAllInFormatByOutFormat(data) {
+    return request.get('/convert/listInFormatByOutFormat', data);
+  },
 };
 
 export default convert;
