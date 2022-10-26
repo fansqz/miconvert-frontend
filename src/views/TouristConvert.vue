@@ -28,10 +28,10 @@
     </template>
   </el-upload><br/>
   <!--文件列表-->
-  <el-table :data="fileList"  stripe style="width: 100%">
-    <el-table-column prop="name" width="150"></el-table-column>
-    <el-table-column prop="size" width="150"></el-table-column>
-    <el-table-column width="70px">
+  <el-table :data="fileList"  stripe>
+    <el-table-column prop="name"></el-table-column>
+    <el-table-column prop="size" ></el-table-column>
+    <el-table-column>
         <template v-slot="{row}">
             <el-button size="small" :type="row.buttonType"
             :text="row.buttonText" :disabled="row.disabled"
@@ -147,7 +147,7 @@ const downloadFile = async (filename) => {
 getInFormatsByOutFormats();
 </script>
 
-<style>
+<style scoped>
 #parseFile {
   position: absolute;
   left: 50%;

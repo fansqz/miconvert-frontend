@@ -5,16 +5,9 @@ export const defaltMap = [
     component: () => import('../views/UserLogin.vue'),
   },
   {
-    path: '/fileconvert',
-    name: 'fileconvert',
-    component: () => import('../layout/UnLoginLayout.vue'),
-    children: [
-      {
-        path: '/',
-        name: 'home',
-        component: () => import('../views/TouristConvert.vue'),
-      },
-    ],
+    path: '/tourist/convert',
+    name: 'touristFileConvert',
+    component: () => import('../layout/Tourist.vue'),
   },
 ];
 

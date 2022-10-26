@@ -23,14 +23,14 @@ router.beforeEach((to, from, next) => {
   // 不调用 白屏卡住
 
   // 访问白名单，不需要验证
-  if (to.path === '/login' || to.path === '/convert') {
+  if (to.path === '/login' || to.path === '/tourist/convert') {
     return next();
   }
   // 需要验证
   if (!checkLogin()) {
     // 去登陆
     return next({
-      name: 'Login',
+      name: 'login',
       query: {
         redirect: to.path,
       },
