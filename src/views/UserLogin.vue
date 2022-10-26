@@ -1,10 +1,11 @@
 <template>
+  <div class="login-panel">
   <el-form
     ref="ruleFormRef"
     :model="ruleForm"
     :rules="rules"
-    label-width="120px"
-    class="demo-ruleForm"
+    label-width="80px"
+    class="login-form"
     status-icon
   >
     <el-form-item label="用户名" prop="username">
@@ -17,6 +18,7 @@
       <el-button type="primary" @click="doSubmit">提交</el-button>
     </el-form-item>
   </el-form>
+  </div>
 </template>
 
 <!--组件引用不用声明-->
@@ -67,3 +69,30 @@ const doSubmit = () => {
 };
 
 </script>
+
+<style scoped>
+.login-panel {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 0, 0;
+  box-sizing: border-box;
+  padding-bottom: 40px;
+  align-items: center;
+  width: 500px;
+  height: 300px;
+  border-radius: 10px;
+  background-color: #eaeced;
+  border: solid 1px #e3e1e1;
+}
+.login-form {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+</style>

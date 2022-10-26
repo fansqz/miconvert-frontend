@@ -3,7 +3,7 @@ import request from '../utils';
 const user = {
   // 注册
   register(data) {
-    return request.post('/user/register', data);
+    return request.postByFrom('/user/register', data);
   },
   // 登录
   login(data) {

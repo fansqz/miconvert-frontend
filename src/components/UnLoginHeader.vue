@@ -12,7 +12,7 @@
   </el-menu>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 

@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
   // 不调用 白屏卡住
 
   // 访问白名单，不需要验证
-  if (to.path === '/login' || to.path === '/tourist/convert') {
+  if (to.path === '/login' || to.path === '/tourist/convert' || to.path === '/register') {
     return next();
   }
   // 需要验证

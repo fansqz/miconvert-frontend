@@ -45,7 +45,7 @@ const request = {
   },
   putByFrom(url, data, config) {
     const dataForm = toFormData(data);
-    return axiosInstance.apply.put(url, dataForm, {
+    return axiosInstance.put(url, dataForm, {
       ...config,
       headers: { 'Content-Type': 'multipart/form-data' },
     });
