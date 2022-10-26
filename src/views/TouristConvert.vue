@@ -1,4 +1,5 @@
 <template>
+  <div id="parseFile">
   <!--上传列表-->
   <el-upload
     class="upload-demo"
@@ -7,6 +8,7 @@
     :http-request="convertFile"
     :on-remove="handleRemove"
     :show-file-list="false"
+    style="width: 100%"
   >
     <el-icon class="el-icon--upload"><upload-filled /></el-icon>
     <div class="el-upload__text">
@@ -27,9 +29,9 @@
   </el-upload><br/>
   <!--文件列表-->
   <el-table :data="fileList"  stripe style="width: 100%">
-    <el-table-column prop="name"></el-table-column>
-    <el-table-column prop="size"></el-table-column>
-    <el-table-column width="80px">
+    <el-table-column prop="name" width="150"></el-table-column>
+    <el-table-column prop="size" width="150"></el-table-column>
+    <el-table-column width="70px">
         <template v-slot="{row}">
             <el-button size="small" :type="row.buttonType"
             :text="row.buttonText" :disabled="row.disabled"
@@ -40,6 +42,7 @@
         </template>
     </el-table-column>
   </el-table>
+  </div>
 </template>
 
 <script setup>
@@ -132,10 +135,10 @@ getInFormatsByOutFormats();
 </script>
 
 <style>
-.example-showcase .el-dropdown-link {
-  cursor: pointer;
-  color: var(--el-color-primary);
-  display: flex;
-  align-items: center;
+#parseFile {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
 }
 </style>
