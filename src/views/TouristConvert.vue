@@ -16,7 +16,8 @@
     <!--下拉框-->
     <template #tip>
       <el-form-item label="目标类型：">
-        <el-select v-model="outFormat" @click="getOutFormats" @change="getInFormatsByOutFormats">
+        <el-select v-model="outFormat" @click="getOutFormats()"
+        @change="getInFormatsByOutFormats()">
           <el-option v-for="(item,index) in outFormats"
           :key="index" :label="item" :value="item">
           </el-option>
@@ -27,16 +28,14 @@
   <!--文件列表-->
   <el-table :data="fileList"  stripe style="width: 100%">
     <el-table-column prop="name"></el-table-column>
+    <el-table-column prop="size"></el-table-column>
     <el-table-column width="80px">
         <template v-slot="{row}">
-            <el-button size="small" type="text">
-                <a :href="row.url">下载</a>
-            </el-button>
-        </template>
-    </el-table-column>
-    <el-table-column width="80px" v-if="isShowDel">
-        <template v-slot="scope">
-            <el-button size="small" type="text" @click="deleteButton(scope.$index)">删除
+            <el-button size="small" :type="row.buttonType"
+            :text="row.buttonText" :disabled="row.disabled"
+            @click="downloadFile()"
+            >
+            {{ row.buttonText }}
             </el-button>
         </template>
     </el-table-column>
@@ -45,9 +44,9 @@
 
 <script setup>
 import { ElMessage } from 'element-plus';
-import { ref, nextTick } from 'vue';
+import { ref } from 'vue';
 import convert from '../service/api/convert';
-
+import { filterSize } from '../utils/fileutils';
 // 文件列表
 const fileList = ref([]);
 // 选择的格式
@@ -80,15 +79,35 @@ const convertFile = async (params) => {
   const index = fileList.value.length;
   fileList.value.push({
     name: params.file.name,
+    size: filterSize(params.file.size),
     url: '',
+    buttonText: '解析中',
   });
   // 解析文件获取结果
-  const res = await convert.convertFile(fd);
-  // 读取件名称
-  const filename = res.data.substring(res.data.indexOf('_') + 1);
-  fileList.value[index].name = filename;
-  fileList.value[index].url = `${convert.getDowloadBeginUrl()}/${res.data}`;
-  await nextTick();
+  try {
+    const res = await convert.convertFile(fd);
+    // 读取件名称
+    const filename = res.data.substring(res.data.indexOf('_') + 1);
+    // 解析成功，按钮格式转换
+    fileList.value[index] = {
+      name: filename,
+      url: convert.getDowloadUrl(res.data),
+      size: fileList.value[index].size,
+      buttonType: 'success',
+      buttonText: '下载',
+      disabled: false,
+    };
+  } catch {
+    // 有异常下载失败
+    fileList.value[index] = {
+      name: fileList.value[index].name,
+      url: '',
+      size: fileList.value[index].size,
+      buttonType: 'danger',
+      buttonText: '失败',
+      disabled: true,
+    };
+  }
 };
 
 // 获取输出格式
@@ -105,6 +124,9 @@ const getInFormatsByOutFormats = async () => {
   inFormatsString.value = inFormats.value.toString();
 };
 
+// 下载文件
+const downloadFile = () => '';
+
 // 进入页面时就获取pfd支持的inFormat
 getInFormatsByOutFormats();
 </script>
@@ -116,5 +138,4 @@ getInFormatsByOutFormats();
   display: flex;
   align-items: center;
 }
-
 </style>

@@ -55,7 +55,7 @@ const request = {
     const headers = method
       ? { 'Content-Type': 'application/json' }
       : { 'Content-Type': 'application/octet-stream' };
-    return axiosInstance(url, {
+    return axiosInstance.get(url, {
       responseType: 'blob',
       headers,
       method,

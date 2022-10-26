@@ -22,8 +22,8 @@ const convert = {
   listAllInFormatByOutFormat(data) {
     return request.get('/convert/listInFormatByOutFormat', data);
   },
-  getDowloadBeginUrl() {
-    return `${baseUrl}/convert/downloadFile`;
+  getDowloadUrl(filename) {
+    return `${baseUrl}/convert/downloadFile/${filename}`;
   },
 };
 
