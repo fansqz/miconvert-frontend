@@ -41,7 +41,7 @@ instance.interceptors.request.use((config) => {
   const token = window.localStorage.getItem('token');
   if (token) {
     // eslint-disable-next-line no-param-reassign
-    config.headers.accessToken = token;
+    config.headers.token = token;
   }
   return config;
 }, (error) => Promise.reject(error));
