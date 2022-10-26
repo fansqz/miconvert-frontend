@@ -9,6 +9,11 @@ export const defaltMap = [
     name: 'touristFileConvert',
     component: () => import('../layout/Tourist.vue'),
   },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('../views/UserRegister.vue'),
+  },
 ];
 
 export default {};
