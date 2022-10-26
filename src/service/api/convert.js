@@ -12,7 +12,7 @@ const convert = {
   },
   // 读取一个文件
   downloadFile(data) {
-    return request.download(`/convert/downloadFile/${data}`, {}, 'get');
+    request.download(`/convert/downloadFile/${data}`, {}, 'get');
   },
   // 获取输出各格式列表
   listAllOutFormat() {

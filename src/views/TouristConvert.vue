@@ -35,7 +35,7 @@
         <template v-slot="{row}">
             <el-button size="small" :type="row.buttonType"
             :text="row.buttonText" :disabled="row.disabled"
-            @click="downloadFile()"
+            @click="downloadFile(row.filename)"
             >
             {{ row.buttonText }}
             </el-button>
@@ -94,7 +94,7 @@ const convertFile = async (params) => {
     // 解析成功，按钮格式转换
     fileList.value[index] = {
       name: filename,
-      url: convert.getDowloadUrl(res.data),
+      filename: res.data,
       size: fileList.value[index].size,
       buttonType: 'success',
       buttonText: '下载',
@@ -128,7 +128,20 @@ const getInFormatsByOutFormats = async () => {
 };
 
 // 下载文件
-const downloadFile = () => '';
+const downloadFile = async (filename) => {
+  const url = await convert.getDowloadUrl(filename);
+  const form = document.createElement('form');
+  form.style.display = 'none';
+  form.setAttribute('target', '_blank');
+  form.setAttribute('method', 'get');
+  form.setAttribute('action', url);
+  const input = document.createElement('input');
+  input.setAttribute('type', 'hidden');
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+};
 
 // 进入页面时就获取pfd支持的inFormat
 getInFormatsByOutFormats();
