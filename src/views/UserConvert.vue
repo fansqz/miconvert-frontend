@@ -63,7 +63,6 @@ import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
 import convert from '../service/api/convert';
 import userConvert from '../service/api/userconvert';
-import { filterSize } from '../utils/fileutils';
 // 文件列表
 const fileList = ref([]);
 // 选择的格式
@@ -114,38 +113,12 @@ const convertFile = async (params) => {
   const fd = new FormData();
   fd.append('file', params.file);
   fd.append('outFormat', outFormat.value);
-  // 添加文件并记录位置
-  const index = fileList.value.length;
-  fileList.value.push({
-    name: params.file.name,
-    size: filterSize(params.file.size),
-    url: '',
-    buttonText: '解析中',
-  });
-  // 解析文件获取结果
-  try {
-    const res = await convert.convertFile(fd);
-    // 读取件名称
-    const filename = res.data.substring(res.data.indexOf('_') + 1);
-    // 解析成功，按钮格式转换
-    fileList.value[index] = {
-      name: filename,
-      filename: res.data,
-      size: fileList.value[index].size,
-      buttonType: 'success',
-      buttonText: '下载',
-      disabled: false,
-    };
-  } catch {
-    // 有异常下载失败
-    fileList.value[index] = {
-      name: fileList.value[index].name,
-      url: '',
-      size: fileList.value[index].size,
-      buttonType: 'danger',
-      buttonText: '失败',
-      disabled: true,
-    };
+  // 添加文件
+  const res = await userConvert.convertFile(fd);
+  if (res.code === 200) {
+    // 再次读取用户文件
+    const res2 = await userConvert.listFile();
+    fileList.value = res2.data;
   }
 };
 
@@ -164,8 +137,8 @@ const getInFormatsByOutFormats = async () => {
 };
 
 // 下载文件
-const downloadFile = async (filename) => {
-  const url = await convert.getDowloadUrl(filename);
+const downloadFile = (fileId) => {
+  const url = userConvert.getDownloadUrl(fileId);
   const form = document.createElement('form');
   form.style.display = 'none';
   form.setAttribute('target', '_blank');

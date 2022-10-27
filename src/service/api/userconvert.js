@@ -1,4 +1,5 @@
 import request from '../utils';
+import baseUrl from '../utils/baseUrl';
 
 const convert = {
   // 用户获取文件列表
@@ -16,6 +17,9 @@ const convert = {
   // 异步解析一个文件
   convertFile(data) {
     return request.post('/userConvert/convertFile', data);
+  },
+  getDownloadUrl(fileId) {
+    return `${baseUrl}/userConvert/downloadFile/${fileId}`;
   },
 };
 
