@@ -34,7 +34,7 @@
     <el-table-column>
         <template v-slot="{row}">
             <el-button size="small" :type="row.buttonType"
-            :text="row.buttonText" :disabled="row.disabled"
+            :disabled="row.disabled"
             @click="downloadFile(row.filename)"
             >
             {{ row.buttonText }}

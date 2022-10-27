@@ -59,8 +59,8 @@ const doSubmit = () => {
       user.setUserInfo(ruleForm.username);
       // 添加token
       window.localStorage.setItem('token', res.data);
-      // 跳转到首页
-      router.push(route.query.redirec || '/');
+      // 跳转用户原来页面或用户首页
+      router.push(route.query.redirec || { name: 'userFileConvert' });
     } else {
       // eslint-disable-next-line no-console
       console.log('error submit', fields);

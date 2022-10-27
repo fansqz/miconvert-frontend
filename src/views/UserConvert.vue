@@ -28,27 +28,31 @@
     </template>
   </el-upload><br/>
   <!--文件列表-->
+  {{ fileList }}
   <el-table :data="fileList" height="250" stripe>
-    <el-table-column prop="name"></el-table-column>
-    <el-table-column prop="size" ></el-table-column>
+    <el-table-column prop="fileName"></el-table-column>
+    <el-table-column prop="fileSize" ></el-table-column>
     <!--下载按钮，或状态-->
     <el-table-column>
-      <el-button size="small"
-      :type="buttonType"
-      :text="row.buttonText"
-      :disabled="state == 2 || state == 0"
-      @click="downloadFile(id)"
-      >
-      {{ row.buttonText }}
-      </el-button>
+      <template v-slot="{row}">
+        <el-button size="small"
+        :type="getButtonTypeByState(row.state)"
+        :disabled="(row.state === 2 || row.state === 0)"
+        @click="downloadFile(row.id)"
+        >
+        {{ getButtonTextByState(row.state) }}
+        </el-button>
+      </template>
     </el-table-column>
     <!--删除按钮-->
     <el-table-column>
-      <el-button size="small"
-      :text="row.buttonText"
-      >
-      删除
-      </el-button>
+      <template v-slot="row">
+        <el-button size="small"
+        v-if="row.state === 1"
+        >
+        删除
+        </el-button>
+      </template>
     </el-table-column>
   </el-table>
   </div>
@@ -84,24 +88,24 @@ const beforeUpload = (file) => {
 
 // 获取用户当前文件
 const getUserFiles = async () => {
-  const res = await userConvert.listFile;
+  const res = await userConvert.listFile();
   fileList.value = res.data;
-  for (let i = 0; i < res.data.size(); i += 1) {
-    let fileName = res.data[i].inFileName;
-    if (res.data[i].outFileName !== '') {
-      fileName = res.data[i].outFileName;
-    }
-    let fileSize = res.data[i].inFileSize;
-    if (res.data[i].outFileSize !== '') {
-      fileSize = res.data[i].outFileSize;
-    }
-    fileList.value.push({
-      id: res.data[i].id,
-      fileName,
-      fileSize,
-      state: res.data[i].state,
-    });
+};
+
+const getButtonTextByState = (state) => {
+  if (state === 2) {
+    return '失败';
+  } if (state === 1) {
+    return '下载';
   }
+  return '转换中';
+};
+
+const getButtonTypeByState = (state) => {
+  if (state === 2) {
+    return 'danger';
+  }
+  return 'success';
 };
 
 // 上传并转换文件

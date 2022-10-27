@@ -10,6 +10,11 @@ export const defaltMap = [
     component: () => import('../layout/Tourist.vue'),
   },
   {
+    path: '/user/convert',
+    name: 'userFileConvert',
+    component: () => import('../views/UserConvert.vue'),
+  },
+  {
     path: '/register',
     name: 'register',
     component: () => import('../views/UserRegister.vue'),
