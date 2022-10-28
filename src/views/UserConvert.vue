@@ -46,9 +46,11 @@
     </el-table-column>
     <!--删除按钮-->
     <el-table-column>
-      <template v-slot="row">
+      <template v-slot="{row}">
         <el-button size="small"
-        v-if="row.state === 1"
+        type = 'danger'
+        v-if="row.state === 1 || row.state === 2"
+        @click="deleteFile(row.id)"
         >
         删除
         </el-button>
@@ -150,6 +152,16 @@ const downloadFile = (fileId) => {
   document.body.appendChild(form);
   form.submit();
   document.body.removeChild(form);
+};
+
+// 删除文件
+const deleteFile = async (fileId) => {
+  const res = await userConvert.deleteFiles([fileId]);
+  if (res.data === 200) {
+    ElMessage.success(res.message);
+  }
+  // 更新文件列表
+  getUserFiles();
 };
 
 // 进入页面时就获取pfd支持的inFormat

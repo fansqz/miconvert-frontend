@@ -6,9 +6,9 @@ const convert = {
   listFile() {
     return request.get('/userConvert/listFile', {});
   },
-  // 获取一个文件支持的格式
-  deleteFile(data) {
-    return request.get('/userConvert/getSupportFormat', data);
+  // 删除
+  deleteFiles(ids) {
+    return request.delete('/userConvert/deleteFiles', { ids: `${ids}` });
   },
   // 下载一个文件
   downloadFile(data) {

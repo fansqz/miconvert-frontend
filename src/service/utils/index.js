@@ -50,6 +50,13 @@ const request = {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
+  delete(url, data, config) {
+    console.log(data);
+    return axiosInstance.delete(url, {
+      params: data,
+      ...config,
+    });
+  },
   download(url, data, method) {
     const param = method ? 'data' : 'params';
     const headers = method
