@@ -12,6 +12,9 @@ const user = {
   changePassword(data) {
     return request.post('/user/changePassword', data);
   },
+  getUserInfo() {
+    return request.get('/user/getUserInfo');
+  },
 };
 
 export default user;

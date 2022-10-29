@@ -18,10 +18,10 @@ const errorHandle = (code, msg) => {
   switch (code) {
     case 1:
       ElMessage.error(msg);
-      break;
+      return true;
     case 2:
       ElMessageBox.error(msg);
-      break;
+      return true;
     case 5002:
       console.log(msg);
       break;
@@ -34,6 +34,7 @@ const errorHandle = (code, msg) => {
     default:
       console.log('success');
   }
+  return false;
 };
 
 // 配置请求拦截器
@@ -52,7 +53,9 @@ instance.interceptors.response.use((response) => {
   const { code } = data;
   const { message } = data;
   // 处理异常
-  errorHandle(code, message);
+  if (errorHandle(code, message)) {
+    return Promise.reject(response);
+  }
   return data;
 }, (error) => {
   const { response } = error;

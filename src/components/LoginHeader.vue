@@ -8,17 +8,16 @@
   >
     <div class="flex-grow" />
     <el-menu-item index="1">退出登录</el-menu-item>
-    <el-menu-item index="2">{{ username }}</el-menu-item>
+    <el-menu-item index="2">{{ user.username }}</el-menu-item>
   </el-menu>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
-import useUser from '../store/user';
+import userApi from '../service/api/user';
 
-const user = useUser();
-const username = ref(user.userInfo);
+const user = ref({});
 const router = useRouter();
 const activeIndex = ref('0');
 const handleSelect = (key) => {
@@ -29,6 +28,13 @@ const handleSelect = (key) => {
     });
   }
 };
+
+const getUserInof = async () => {
+  const res = await userApi.getUserInfo();
+  user.value = res.data;
+};
+
+getUserInof();
 </script>
 
 <style>
