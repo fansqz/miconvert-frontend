@@ -28,7 +28,6 @@
     </template>
   </el-upload><br/>
   <!--文件列表-->
-  {{ fileList }}
   <el-table :data="fileList" height="250" stripe>
     <el-table-column prop="fileName"></el-table-column>
     <el-table-column prop="fileSize" ></el-table-column>
