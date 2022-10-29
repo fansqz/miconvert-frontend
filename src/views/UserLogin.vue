@@ -1,23 +1,30 @@
 <template>
+  <!--顶部字条-->
+  <p class="logo">
+    MiConvert
+  </p>
   <div class="login-panel">
-  <el-form
-    ref="ruleFormRef"
-    :model="ruleForm"
-    :rules="rules"
-    label-width="80px"
-    class="login-form"
-    status-icon
-  >
-    <el-form-item label="用户名" prop="username">
-      <el-input v-model="ruleForm.username" />
-    </el-form-item>
-    <el-form-item label="密码" prop="password">
-      <el-input v-model="ruleForm.password" />
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="doSubmit">提交</el-button>
-    </el-form-item>
-  </el-form>
+    <el-form
+      ref="ruleFormRef"
+      :model="ruleForm"
+      :rules="rules"
+      label-width="55px"
+      class="login-form"
+    >
+      <el-form-item label="名称" prop="username">
+        <el-input v-model="ruleForm.username" />
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="ruleForm.password" />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="doSubmit">登录</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+
+    <!--底部蓝条-->
+  <div class="footer">
   </div>
 </template>
 
@@ -83,16 +90,34 @@ const doSubmit = () => {
   box-sizing: border-box;
   padding-bottom: 40px;
   align-items: center;
-  width: 500px;
-  height: 300px;
+  width: 400px;
+  height: 250px;
   border-radius: 10px;
-  background-color: #eaeced;
-  border: solid 1px #e3e1e1;
+  background-color: #eceef0;
+  border: solid 1px #635757;
 }
 .login-form {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
+}
+.footer {
+  width: 100%;
+  height: 8%;
+  position: absolute;
+  bottom: 0;
+  background-color: #569df4;
+}
+
+.logo {
+  position: absolute;
+  font-size:xxx-large;
+  font-style: italic;
+  left:42%;
+  top: 13%;
+  font-weight:900;
+  text-decoration: underline;
+  color: #569df4;
 }
 </style>
