@@ -1,6 +1,8 @@
 <template>
   <div id="parseFile">
   <!--上传-->
+  <p class="convert_text1">文件转换器</p>
+  <p class="convert_text2">支持多种格式转换</p><br/><br/>
   <div class="upload">
     <el-upload class="upload_from"
       drag
@@ -148,6 +150,21 @@ getInFormatsByOutFormats();
 </script>
 
 <style scoped>
+
+.convert_text1 {
+  font-size:large;
+  font-style: italic;
+  font-weight:900;
+  text-align: center;
+  color: #c32e2e;
+}
+.convert_text2 {
+  font-size:medium;
+  font-style: italic;
+  font-weight:100;
+  text-align: center;
+  color: #292626;
+}
 #parseFile {
   position: absolute;
   left: 50%;
@@ -157,10 +174,10 @@ getInFormatsByOutFormats();
 
 .file_list {
   position: absolute;
-  top: 55%;
+  top: 60%;
   left: 28%;
   width: 45%;
-  height: 35%;
+  height: 30%;
 }
 
 .upload {
