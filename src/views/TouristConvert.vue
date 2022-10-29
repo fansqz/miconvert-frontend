@@ -1,34 +1,33 @@
 <template>
   <div id="parseFile">
-  <!--上传列表-->
-  <el-upload
-    class="upload-demo"
-    drag
-    :before-upload="beforeUpload"
-    :http-request="convertFile"
-    :on-remove="handleRemove"
-    :show-file-list="false"
-    style="width: 100%"
-  >
-    <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-    <div class="el-upload__text">
-        将文件拖到此处，<em>或点击上传</em><br/>
-        仅支持{{inFormatsString}}转换为{{outFormat}}
-    </div>
-    <!--下拉框-->
-    <template #tip>
-      <el-form-item label="目标类型：">
-        <el-select v-model="outFormat" @click="getOutFormats()"
-        @change="getInFormatsByOutFormats()">
-          <el-option v-for="(item,index) in outFormats"
-          :key="index" :label="item" :value="item">
-          </el-option>
-        </el-select>
-    </el-form-item>
-    </template>
-  </el-upload><br/>
-  <!--文件列表-->
-  <el-table :data="fileList"  stripe>
+  <!--上传-->
+  <div class="upload">
+    <el-upload class="upload_from"
+      drag
+      :before-upload="beforeUpload"
+      :http-request="convertFile"
+      :on-remove="handleRemove"
+      :show-file-list="false"
+    >
+      <img class="upload_img" src="/public/upload.ico"/>
+      <div class="el-upload__text" >
+          将文件拖到此处，<em>或点击上传</em><br/>
+          仅支持{{inFormatsString}}转换为{{outFormat}}
+      </div>
+    </el-upload>
+  </div><br/>
+  <!--下拉框-->
+  <el-form-item label="目标类型：" class="outformat_select">
+    <el-select v-model="outFormat" @click="getOutFormats()"
+    @change="getInFormatsByOutFormats()">
+      <el-option v-for="(item,index) in outFormats"
+      :key="index" :label="item" :value="item">
+      </el-option>
+    </el-select>
+  </el-form-item>
+  </div>
+    <!--文件列表-->
+  <el-table :data="fileList"  class = "file_list" :show-header="false" stripe>
     <el-table-column prop="name"></el-table-column>
     <el-table-column prop="size" ></el-table-column>
     <el-table-column>
@@ -42,7 +41,8 @@
         </template>
     </el-table-column>
   </el-table>
-  </div>
+    <!--底部蓝条-->
+  <div class="footer"></div>
 </template>
 
 <script setup>
@@ -151,7 +151,36 @@ getInFormatsByOutFormats();
 #parseFile {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 37%;
   transform: translate(-50%,-50%);
+}
+
+.file_list {
+  position: absolute;
+  top: 55%;
+  left: 28%;
+  width: 45%;
+  height: 35%;
+}
+
+.upload {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 15px rgb(175, 175, 179);
+}
+
+.upload_img {
+  opacity: 0.2;
+  width: 25%;
+  height: 25%;
+}
+
+.footer {
+  left: 0%;
+  width: 100%;
+  height: 10%;
+  position: absolute;
+  bottom: 0;
+  background-color: #569df4;
 }
 </style>
