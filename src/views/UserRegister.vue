@@ -1,4 +1,9 @@
 <template>
+  <div class="logo">
+    <Logo></Logo>
+  </div>
+  <p class="slogan">让格式转换更简单</p>
+
   <div class="login-panel">
   <el-form
     ref="ruleFormRef"
@@ -22,6 +27,8 @@
     </el-form-item>
   </el-form>
   </div>
+  <!--底部蓝条-->
+  <div class="footer"></div>
 </template>
 
 <!--组件引用不用声明-->
@@ -32,6 +39,8 @@ import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import userApi from '../service/api/user';
+import Logo from '../components/Logo.vue';
+
 // 一定要在方法内使用userUser
 const router = useRouter();
 // 单向数据输出，如果要双向数据绑定，还需要api方法调用
@@ -92,7 +101,7 @@ const doSubmit = () => {
   box-sizing: border-box;
   padding-bottom: 40px;
   align-items: center;
-  width: 500px;
+  width: 450px;
   height: 300px;
   border-radius: 10px;
   background-color: #eaeced;
@@ -102,6 +111,29 @@ const doSubmit = () => {
   position: absolute;
   left: 50%;
   top: 50%;
+  width: 300px;
   transform: translate(-50%,-50%);
+}
+
+.logo {
+  position: absolute;
+  left:41%;
+  top: 13%;
+}
+
+.slogan {
+  position: absolute;
+  left: 46%;
+  top: 21%;
+  color: rgb(114, 110, 110);
+  font-size:smaller;
+}
+
+.footer {
+  width: 100%;
+  height: 8%;
+  position: absolute;
+  bottom: 0;
+  background-color: #569df4;
 }
 </style>

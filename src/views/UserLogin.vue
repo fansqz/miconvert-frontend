@@ -1,8 +1,9 @@
 <template>
   <!--顶部字条-->
-  <p class="logo">
-    MiConvert
-  </p>
+  <div class="logo">
+    <Logo></Logo><br/>
+  </div>
+  <p class="slogan">让格式转换更简单</p>
   <div class="login-panel">
     <el-form
       ref="ruleFormRef"
@@ -36,6 +37,8 @@ import { ref, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import userApi from '../service/api/user';
 import useUser from '../store/user';
+import Logo from '../components/Logo.vue';
+
 // 一定要在方法内使用userUser
 const user = useUser();
 const route = useRoute();
@@ -112,12 +115,15 @@ const doSubmit = () => {
 
 .logo {
   position: absolute;
-  font-size:xxx-large;
-  font-style: italic;
-  left:42%;
+  left:41%;
   top: 13%;
-  font-weight:900;
-  text-decoration: underline;
-  color: #569df4;
+}
+
+.slogan {
+  position: absolute;
+  left: 46%;
+  top: 21%;
+  color: rgb(114, 110, 110);
+  font-size:smaller;
 }
 </style>
