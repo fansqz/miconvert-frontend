@@ -51,7 +51,6 @@ const request = {
     });
   },
   delete(url, data, config) {
-    console.log(data);
     return axiosInstance.delete(url, {
       params: data,
       ...config,

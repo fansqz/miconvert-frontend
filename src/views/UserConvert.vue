@@ -164,10 +164,20 @@ const deleteFile = async (fileId) => {
   getUserFiles();
 };
 
+// 循环更新文件列表
+const pullUserFiles = async () => {
+  const res = await userConvert.listFile();
+  fileList.value = res.data;
+  const pollingST = setTimeout(() => {
+    clearTimeout(pollingST);
+    pullUserFiles();
+  }, 5000);
+};
+
 // 进入页面时就获取pfd支持的inFormat
 getInFormatsByOutFormats();
 // 获取用户原本文件列表
-getUserFiles();
+pullUserFiles();
 </script>
 
 <style scoped>
