@@ -6,6 +6,9 @@
     :ellipsis="false"
     @select="handleSelect"
   >
+    <div class="logoimg">
+      <img src="/public/logo.ico"/>
+    </div>
     <div class="flex-grow" />
     <el-menu-item index="1">登录</el-menu-item>
     <el-menu-item index="2">注册</el-menu-item>
