@@ -28,7 +28,7 @@
     </el-select>
   </el-form-item>
   </div>
-    <!--文件列表-->
+  <!--文件列表-->
   <el-table :data="fileList"  class = "file_list" :show-header="false" stripe>
     <el-table-column prop="name"></el-table-column>
     <el-table-column prop="size" ></el-table-column>
@@ -168,7 +168,7 @@ getInFormatsByOutFormats();
 #parseFile {
   position: absolute;
   left: 50%;
-  top: 37%;
+  top: 35%;
   transform: translate(-50%,-50%);
 }
 

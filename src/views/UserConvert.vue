@@ -1,8 +1,10 @@
 <template>
   <div id="parseFile">
-  <!--上传列表-->
+    <!--上传-->
+  <p class="convert_text1">文件转换器</p>
+  <p class="convert_text2">支持多种格式转换</p><br/><br/>
   <el-upload
-    class="upload-demo"
+    class="upload"
     drag
     :before-upload="beforeUpload"
     :http-request="convertFile"
@@ -15,20 +17,19 @@
         将文件拖到此处，<em>或点击上传</em><br/>
         仅支持{{inFormatsString}}转换为{{outFormat}}
     </div>
-    <!--下拉框-->
-    <template #tip>
-      <el-form-item label="目标类型：">
-        <el-select v-model="outFormat" @click="getOutFormats()"
-        @change="getInFormatsByOutFormats()">
-          <el-option v-for="(item,index) in outFormats"
-          :key="index" :label="item" :value="item">
-          </el-option>
-        </el-select>
-    </el-form-item>
-    </template>
   </el-upload><br/>
-  <!--文件列表-->
-  <el-table :data="fileList" height="250" stripe>
+  <!--下拉框-->
+  <el-form-item label="目标类型：">
+    <el-select v-model="outFormat" @click="getOutFormats()"
+    @change="getInFormatsByOutFormats()">
+      <el-option v-for="(item,index) in outFormats"
+      :key="index" :label="item" :value="item">
+      </el-option>
+    </el-select>
+</el-form-item>
+  </div>
+    <!--文件列表-->
+  <el-table :data="fileList" class = "file_list" :show-header="false" stripe>
     <el-table-column prop="fileName"></el-table-column>
     <el-table-column prop="fileSize" ></el-table-column>
     <!--下载按钮，或状态-->
@@ -56,7 +57,8 @@
       </template>
     </el-table-column>
   </el-table>
-  </div>
+  <!--底部蓝条-->
+  <div class="footer"></div>
 </template>
 
 <script setup>
@@ -180,10 +182,49 @@ pullUserFiles();
 </script>
 
 <style scoped>
+
+.convert_text1 {
+  font-size:large;
+  font-style: italic;
+  font-weight:900;
+  text-align: center;
+  color: #c32e2e;
+}
+.convert_text2 {
+  font-size:medium;
+  font-style: italic;
+  font-weight:100;
+  text-align: center;
+  color: #292626;
+}
+
 #parseFile {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 35%;
   transform: translate(-50%,-50%);
+}
+
+.upload {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 15px rgb(175, 175, 179);
+}
+
+.file_list {
+  position: absolute;
+  top: 60%;
+  left: 28%;
+  width: 45%;
+  height: 30%;
+}
+
+.footer {
+  left: 0%;
+  width: 100%;
+  height: 7%;
+  position: absolute;
+  bottom: 0;
+  background-color: #569df4;
 }
 </style>
