@@ -14,15 +14,15 @@
       <img class="upload_img" src="/public/upload.ico"/>
       <div class="el-upload__text" >
           将文件拖到此处，<em>或点击上传</em><br/>
-          仅支持{{inFormatsString}}转换为{{outFormat}}
+          仅支持{{inputFormatsString}}转换为{{outputFormat}}
       </div>
     </el-upload>
   </div><br/>
   <!--下拉框-->
   <el-form-item label="目标类型：" class="outformat_select">
-    <el-select v-model="outFormat" @click="getOutFormats()"
+    <el-select v-model="outputFormat" @click="getOutputFormats()"
     @change="getInFormatsByOutFormats()">
-      <el-option v-for="(item,index) in outFormats"
+      <el-option v-for="(item,index) in outputFormats"
       :key="index" :label="item" :value="item">
       </el-option>
     </el-select>
@@ -55,13 +55,13 @@ import { filterSize } from '../utils/fileutils';
 // 文件列表
 const fileList = ref([]);
 // 选择的格式
-const outFormat = ref('pdf');
+const outputFormat = ref('pdf');
 // 可选的格式
-const outFormats = ref([]);
+const outputFormats = ref([]);
 // 可输入格式
-const inFormats = ref([]);
+const inputFormats = ref([]);
 
-const inFormatsString = ref();
+const inputFormatsString = ref();
 
 // 添加文件并校验
 const beforeUpload = (file) => {
@@ -79,7 +79,7 @@ const convertFile = async (params) => {
   // 验证数据是否合格
   const fd = new FormData();
   fd.append('file', params.file);
-  fd.append('outFormat', outFormat.value);
+  fd.append('outputFormat', outputFormat.value);
   // 添加文件并记录位置
   const index = fileList.value.length;
   fileList.value.push({
@@ -116,17 +116,17 @@ const convertFile = async (params) => {
 };
 
 // 获取输出格式
-const getOutFormats = async () => {
-  const res = await convert.listAllOutFormat();
-  outFormats.value = res.data;
+const getOutputFormats = async () => {
+  const res = await convert.listAllOutputFormat();
+  outputFormats.value = res.data;
 };
 
 // 根据目标格式获取输入格式
 const getInFormatsByOutFormats = async () => {
-  const res = await convert.listAllInFormatByOutFormat({ outFormat: outFormat.value });
+  const res = await convert.listAllInputFormatByOutputFormat({ format: outputFormat.value });
   // 设置各种属性
-  inFormats.value = res.data;
-  inFormatsString.value = inFormats.value.toString();
+  inputFormats.value = res.data;
+  inputFormatsString.value = inputFormats.value.toString();
 };
 
 // 下载文件
