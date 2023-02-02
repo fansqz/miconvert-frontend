@@ -53,8 +53,7 @@
 </template>
 
 <script setup>
-import { ElMessage } from 'element-plus';
-import { genFileId } from 'element-plus'
+import { genFileId } from 'element-plus';
 import { ref } from 'vue';
 import convert from '../service/api/convert';
 import { filterSize } from '../utils/fileutils';
