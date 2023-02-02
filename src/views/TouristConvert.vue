@@ -6,27 +6,32 @@
   <div class="upload">
     <el-upload class="upload_from"
       drag
+      ref="uploadRef"
       :before-upload="beforeUpload"
       :http-request="convertFile"
-      :on-remove="handleRemove"
-      :show-file-list="false"
+      :on-exceed="handleExceed"
+      :auto-upload="false"
+      :limit="1"
     >
       <img class="upload_img" src="/public/upload.ico"/>
+      <!--选择文件-->
       <div class="el-upload__text" >
           将文件拖到此处，<em>或点击上传</em><br/>
-          仅支持{{inputFormatsString}}转换为{{outputFormat}}
       </div>
     </el-upload>
   </div><br/>
   <!--下拉框-->
-  <el-form-item label="目标类型：" class="outformat_select">
-    <el-select v-model="outputFormat" @click="getOutputFormats()"
-    @change="getInFormatsByOutFormats()">
+  <el-form-item label="转换为：" class="outformat_select">
+    <el-select v-model="outputFormat" @click="getOutputFormats()">
       <el-option v-for="(item,index) in outputFormats"
       :key="index" :label="item" :value="item">
       </el-option>
     </el-select>
   </el-form-item>
+  <!--提交按钮-->
+  <el-button class="upload_button" type="success" @click="submit">
+    开始解析
+  </el-button>
   </div>
   <!--文件列表-->
   <el-table :data="fileList"  class = "file_list" :show-header="false" stripe>
@@ -49,6 +54,7 @@
 
 <script setup>
 import { ElMessage } from 'element-plus';
+import { genFileId } from 'element-plus'
 import { ref } from 'vue';
 import convert from '../service/api/convert';
 import { filterSize } from '../utils/fileutils';
@@ -58,10 +64,8 @@ const fileList = ref([]);
 const outputFormat = ref('pdf');
 // 可选的格式
 const outputFormats = ref([]);
-// 可输入格式
-const inputFormats = ref([]);
 
-const inputFormatsString = ref();
+const uploadRef = ref();
 
 // 添加文件并校验
 const beforeUpload = (file) => {
@@ -74,6 +78,13 @@ const beforeUpload = (file) => {
   return true;
 };
 
+const handleExceed = (files) => {
+  uploadRef.value.clearFiles();
+  const file = files[0];
+  file.uid = genFileId();
+  uploadRef.value.handleStart(file);
+};
+
 // 上传并转换文件
 const convertFile = async (params) => {
   // 验证数据是否合格
@@ -82,6 +93,7 @@ const convertFile = async (params) => {
   fd.append('outputFormat', outputFormat.value);
   // 添加文件并记录位置
   const index = fileList.value.length;
+  console.log(params.value);
   fileList.value.push({
     name: params.file.name,
     size: filterSize(params.file.size),
@@ -115,18 +127,15 @@ const convertFile = async (params) => {
   }
 };
 
+// 按下按钮提交请求
+const submit = () => {
+  uploadRef.value.submit();
+};
+
 // 获取输出格式
 const getOutputFormats = async () => {
   const res = await convert.listAllOutputFormat();
   outputFormats.value = res.data;
-};
-
-// 根据目标格式获取输入格式
-const getInFormatsByOutFormats = async () => {
-  const res = await convert.listAllInputFormatByOutputFormat({ format: outputFormat.value });
-  // 设置各种属性
-  inputFormats.value = res.data;
-  inputFormatsString.value = inputFormats.value.toString();
 };
 
 // 下载文件
@@ -145,8 +154,6 @@ const downloadFile = async (filename) => {
   document.body.removeChild(form);
 };
 
-// 进入页面时就获取pfd支持的inFormat
-getInFormatsByOutFormats();
 </script>
 
 <style scoped>
