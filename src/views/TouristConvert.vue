@@ -86,16 +86,17 @@ const handleExceed = (files) => {
 
 // 上传并转换文件
 const convertFile = async (params) => {
+  const oldFilename = params.file.name;
+  const oldFilesize = params.file.size;
   // 验证数据是否合格
   const fd = new FormData();
   fd.append('file', params.file);
   fd.append('outputFormat', outputFormat.value);
   // 添加文件并记录位置
   const index = fileList.value.length;
-  console.log(params.value);
   fileList.value.push({
-    name: params.file.name,
-    size: filterSize(params.file.size),
+    name: oldFilename,
+    size: filterSize(oldFilesize),
     url: '',
     buttonText: '解析中',
   });
@@ -103,10 +104,11 @@ const convertFile = async (params) => {
   try {
     const res = await convert.convertFile(fd);
     // 读取件名称
-    const filename = res.data.substring(res.data.indexOf('_') + 1);
+    const newFilename = oldFilename.substring(0, oldFilename.lastIndexOf('.'))
+      + res.data.substring(res.data.lastIndexOf('.') + 1);
     // 解析成功，按钮格式转换
     fileList.value[index] = {
-      name: filename,
+      name: newFilename,
       filename: res.data,
       size: fileList.value[index].size,
       buttonType: 'success',
