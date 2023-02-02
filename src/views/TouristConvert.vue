@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import { genFileId } from 'element-plus';
+import { genFileId, ElMessage } from 'element-plus';
 import { ref } from 'vue';
 import convert from '../service/api/convert';
 import { filterSize } from '../utils/fileutils';
@@ -126,6 +126,7 @@ const convertFile = async (params) => {
       disabled: true,
     };
   }
+  window.sessionStorage.setItem('fileList', JSON.stringify(fileList.value));
 };
 
 // 按下按钮提交请求
@@ -141,7 +142,7 @@ const getOutputFormats = async () => {
 
 // 下载文件
 const downloadFile = async (filename) => {
-  const url = await convert.getDowloadUrl(filename);
+  const url = convert.getDowloadUrl(filename);
   const form = document.createElement('form');
   form.style.display = 'none';
   form.setAttribute('target', '_blank');
@@ -155,6 +156,13 @@ const downloadFile = async (filename) => {
   document.body.removeChild(form);
 };
 
+const loadFileList = () => {
+  if (window.sessionStorage.getItem('fileList')) {
+    fileList.value = JSON.parse(window.sessionStorage.getItem('fileList'));
+  }
+};
+
+loadFileList();
 </script>
 
 <style scoped>
