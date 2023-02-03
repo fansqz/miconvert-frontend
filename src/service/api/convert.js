@@ -6,6 +6,10 @@ const convert = {
   convertFile(data) {
     return request.post('/convert/convertFile', data);
   },
+  // 快速转换文件
+  fastConvertFile(data) {
+    return request.get('/convert/fastConvertFile', data);
+  },
   // 读取一个文件
   downloadFile(data) {
     request.download(`/convert/downloadFile/${data}`, {}, 'get');

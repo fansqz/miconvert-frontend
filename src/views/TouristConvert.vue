@@ -55,6 +55,7 @@
 <script setup>
 import { genFileId, ElMessage } from 'element-plus';
 import { ref } from 'vue';
+import SparkMD5 from 'spark-md5';
 import convert from '../service/api/convert';
 import { filterSize } from '../utils/fileutils';
 // 文件列表
@@ -66,6 +67,8 @@ const outputFormats = ref([]);
 
 const uploadRef = ref();
 
+let fileMD5 = '';
+
 // 添加文件并校验
 const beforeUpload = (file) => {
   // 检验
@@ -74,6 +77,13 @@ const beforeUpload = (file) => {
     ElMessage.error('上传图片大小不能超过 10MB！');
     return false;
   }
+  const spark = new SparkMD5.ArrayBuffer();
+  const fileReader = new FileReader();
+  fileReader.readAsArrayBuffer(file);
+  fileReader.onload = (e) => {
+    spark.append(e.target.result);
+    fileMD5 = spark.end();
+  };
   return true;
 };
 
@@ -84,14 +94,36 @@ const handleExceed = (files) => {
   uploadRef.value.handleStart(file);
 };
 
+// 设置index位置解析成功
+const updateFileListSuccess = (index, name, filename) => {
+  // 解析成功，按钮格式转换
+  fileList.value[index] = {
+    name,
+    filename,
+    size: fileList.value[index].size,
+    buttonType: 'success',
+    buttonText: '下载',
+    disabled: false,
+  };
+};
+
+// 设置index位置解析失败
+const updateFileListFail = (index) => {
+  fileList.value[index] = {
+    name: fileList.value[index].name,
+    filename: '',
+    size: fileList.value[index].size,
+    buttonType: 'danger',
+    buttonText: '失败',
+    disabled: true,
+  };
+};
+
 // 上传并转换文件
 const convertFile = async (params) => {
   const oldFilename = params.file.name;
   const oldFilesize = params.file.size;
   // 验证数据是否合格
-  const fd = new FormData();
-  fd.append('file', params.file);
-  fd.append('outputFormat', outputFormat.value);
   // 添加文件并记录位置
   const index = fileList.value.length;
   fileList.value.push({
@@ -100,31 +132,38 @@ const convertFile = async (params) => {
     url: '',
     buttonText: '解析中',
   });
-  // 解析文件获取结果
+  // 尝试快速转换
   try {
-    const res = await convert.convertFile(fd);
-    // 读取件名称
+    const fd = {
+      key: fileMD5,
+      outputFormat: outputFormat.value,
+    };
+    const res = await convert.fastConvertFile(fd);
+    if (res.code === 4001) {
+      throw res;
+    }
     const newFilename = oldFilename.substring(0, oldFilename.lastIndexOf('.'))
       + res.data.substring(res.data.lastIndexOf('.') + 1);
-    // 解析成功，按钮格式转换
-    fileList.value[index] = {
-      name: newFilename,
-      filename: res.data,
-      size: fileList.value[index].size,
-      buttonType: 'success',
-      buttonText: '下载',
-      disabled: false,
-    };
+    updateFileListSuccess(index, newFilename, res.data);
   } catch {
-    // 有异常下载失败
-    fileList.value[index] = {
-      name: fileList.value[index].name,
-      url: '',
-      size: fileList.value[index].size,
-      buttonType: 'danger',
-      buttonText: '失败',
-      disabled: true,
-    };
+    // 快速解析失败，走正常流程
+    const fd = new FormData();
+    fd.append('file', params.file);
+    fd.append('outputFormat', outputFormat.value);
+    try {
+      const res = await convert.convertFile(fd);
+      if (res.code === 4002) {
+        throw res;
+      }
+      // 读取件名称
+      const newFilename = oldFilename.substring(0, oldFilename.lastIndexOf('.'))
+        + res.data.substring(res.data.lastIndexOf('.') + 1);
+      // 解析成功，按钮格式转换
+      updateFileListSuccess(index, newFilename, res.data);
+    } catch {
+      // 有异常下载失败
+      updateFileListFail(index);
+    }
   }
   window.sessionStorage.setItem('fileList', JSON.stringify(fileList.value));
 };

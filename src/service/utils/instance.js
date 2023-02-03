@@ -22,13 +22,13 @@ const errorHandle = (code, msg) => {
     case 2:
       ElMessageBox.error(msg);
       return true;
-    case 5002:
+    case 500:
       console.log(msg);
       break;
-    case 5011:
+    case 201:
       console.log(msg);
       break;
-    case 5010:
+    case 205:
       console.log(msg);
       break;
     default:
